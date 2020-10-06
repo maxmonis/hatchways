@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Extra from './Extra';
 
 const Student = ({
+  addTag,
   company,
   email,
   firstName,
   grades,
+  id,
   lastName,
   pic,
   skill,
-  id,
   tags,
-  addTag,
 }) => {
   const [showExtra, setShowExtra] = useState(false);
-  const [value, setValue] = useState('');
-  const handleSubmit = e => {
-    e.preventDefault();
-    value && addTag(id, value);
-    setValue('');
-  };
   const fullName = `${firstName} ${lastName}`;
   const nums = grades.map(grade => parseInt(grade));
   const average = nums.reduce((a, b) => a + b) / grades.length;
@@ -34,26 +29,8 @@ const Student = ({
             <p>Skill: {skill}</p>
             <p>Average: {average}%</p>
             {showExtra && (
-              <div>
-                <ul className='grades'>
-                  {grades.map((grade, i) => (
-                    <li key={i}>
-                      {`Test${i + 1}: \xa0\xa0\xa0\xa0\xa0\xa0${grade}%`}
-                    </li>
-                  ))}
-                </ul>
-                <ul className='tags'>
-                  {tags.length > 0 && tags.map(tag => <li key={tag}>{tag}</li>)}
-                </ul>
-                <form onSubmit={handleSubmit}>
-                  <input
-                    className='add-tag-input'
-                    placeholder='Add a tag'
-                    value={value}
-                    onChange={e => setValue(e.target.value)}
-                  />
-                </form>
-              </div>
+              // Extra content hidden unless toggled by user
+              <Extra addTag={addTag} grades={grades} id={id} tags={tags} />
             )}
           </aside>
         </div>
