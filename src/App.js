@@ -16,13 +16,12 @@ function App() {
     };
     getStudents();
   }, []);
-  const updateFiltered = names => setFiltered(names);
   return students ? (
     <div className='container'>
       <Search
         students={students}
         filtered={filtered}
-        updateFiltered={updateFiltered}
+        setFiltered={setFiltered}
       />
       {filtered.length
         ? filtered.map(student => <Student key={student.id} {...student} />)

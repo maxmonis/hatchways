@@ -6,6 +6,7 @@
 }
 
 :root {
+  --white: #ffffff;
   --lightgray: #efefef;
   --gray: #d3d3d3;
   --darkgray: #a9a9a9;
@@ -40,18 +41,21 @@ html {
 }
 
 .student {
-  background-color: #ffffff;
   padding: 5px;
   border-bottom: 1px solid var(--lightgray);
   display: grid;
   grid-template-columns: 1fr 4fr;
+  column-gap: 1rem;
+  width: 100%;
 }
 .student img {
   border: 1px solid var(--lightgray);
   border-radius: 50%;
-  margin: auto;
+  margin: 1rem auto auto;
   padding: 5px;
-  height: 80%;
+  width: 80%;
+  max-width: 250px;
+  max-height: 250px;
 }
 .student h1 {
   font-family: 'Roboto', sans-serif;
@@ -59,9 +63,39 @@ html {
   font-size: 38px;
 }
 .student aside {
-  padding-left: 1rem;
-}
-.student div {
   padding: 1rem;
   color: var(--darkgray);
+}
+
+.student-container {
+  background-color: var(--white);
+  display: flex;
+  flex: row;
+}
+
+.expand-btn {
+  border: none;
+  outline: none;
+  margin: 0 0 auto;
+  color: var(--darkgray);
+  background-color: var(--white);
+  font-size: 5rem;
+  font-weight: 800;
+  padding: 0 1rem;
+}
+.expand-btn:hover {
+  cursor: pointer;
+}
+
+.toggle {
+  background-color: var(--white);
+  width: 50px;
+  height: 100%;
+}
+
+.extra {
+  margin-top: 1rem;
+}
+.extra ul {
+  list-style: none;
 }

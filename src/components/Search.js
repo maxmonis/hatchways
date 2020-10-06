@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-const Search = ({ students, filtered, updateFiltered }) => {
+const Search = ({ students, filtered, setFiltered }) => {
   const text = useRef('');
   useEffect(() => {
     if (!filtered.length) {
@@ -10,7 +10,7 @@ const Search = ({ students, filtered, updateFiltered }) => {
   const handleChange = e => {
     text.current.value = text.current.value.replace(/[^a-z]/gi, '');
     if (text.current.value !== '') {
-      updateFiltered(
+      setFiltered(
         students.filter(student => {
           const fullName = student.firstName + student.lastName;
           const regexp = new RegExp(e.target.value, 'gi');
@@ -18,7 +18,7 @@ const Search = ({ students, filtered, updateFiltered }) => {
         })
       );
     } else {
-      updateFiltered([]);
+      setFiltered([]);
     }
   };
   return (
