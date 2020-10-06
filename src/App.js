@@ -12,10 +12,19 @@ function App() {
       const { data } = await axios.get(
         'https://api.hatchways.io/assessment/students'
       );
-      setStudents(data.students);
+      setStudents(data.students.map(student => ({ ...student, tags: [] })));
     };
     getStudents();
   }, []);
+  const addTag = (id, tag) => {
+    setStudents(
+      students.map(student =>
+        student.id === id
+          ? { ...student, tags: [...student.tags, tag] }
+          : student
+      )
+    );
+  };
   return students ? (
     <div className='container'>
       <Search
@@ -24,8 +33,12 @@ function App() {
         setFiltered={setFiltered}
       />
       {filtered.length
-        ? filtered.map(student => <Student key={student.id} {...student} />)
-        : students.map(student => <Student key={student.id} {...student} />)}
+        ? filtered.map(student => (
+            <Student key={student.id} {...student} addTag={addTag} />
+          ))
+        : students.map(student => (
+            <Student key={student.id} {...student} addTag={addTag} />
+          ))}
     </div>
   ) : (
     'Loading...'

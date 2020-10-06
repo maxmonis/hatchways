@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Student = ({
   company,
@@ -8,9 +8,17 @@ const Student = ({
   lastName,
   pic,
   skill,
+  id,
+  tags,
+  addTag,
 }) => {
   const [showExtra, setShowExtra] = useState(false);
-  const toggle = () => setShowExtra(!showExtra);
+  const [value, setValue] = useState('');
+  const handleSubmit = e => {
+    e.preventDefault();
+    value && addTag(id, value);
+    setValue('');
+  };
   const fullName = `${firstName} ${lastName}`;
   const nums = grades.map(grade => parseInt(grade));
   const average = nums.reduce((a, b) => a + b) / grades.length;
@@ -26,20 +34,31 @@ const Student = ({
             <p>Skill: {skill}</p>
             <p>Average: {average}%</p>
             {showExtra && (
-              <div className='extra'>
-                <ul>
+              <div>
+                <ul className='grades'>
                   {grades.map((grade, i) => (
                     <li key={i}>
                       {`Test${i + 1}: \xa0\xa0\xa0\xa0\xa0\xa0${grade}%`}
                     </li>
                   ))}
                 </ul>
+                <ul className='tags'>
+                  {tags.length > 0 && tags.map(tag => <li key={tag}>{tag}</li>)}
+                </ul>
+                <form onSubmit={handleSubmit}>
+                  <input
+                    className='add-tag-input'
+                    placeholder='Add a tag'
+                    value={value}
+                    onChange={e => setValue(e.target.value)}
+                  />
+                </form>
               </div>
             )}
           </aside>
         </div>
       </div>
-      <button className='expand-btn' onClick={toggle}>
+      <button className='expand-btn' onClick={() => setShowExtra(!showExtra)}>
         {showExtra ? '-' : '+'}
       </button>
     </div>

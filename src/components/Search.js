@@ -1,36 +1,55 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Search = ({ students, filtered, setFiltered }) => {
-  const text = useRef('');
-  useEffect(() => {
-    if (!filtered.length) {
-      text.current.value = '';
-    }
-  });
+  const [name, setName] = useState('');
+  const [tag, setTag] = useState('');
   const handleChange = e => {
-    text.current.value = text.current.value.replace(/[^a-z]/gi, '');
-    if (text.current.value !== '') {
+    const { id, value } = e.target;
+    id === 'name-input' ? setName(value) : setTag(value);
+  };
+  useEffect(() => {
+    if (name || tag) {
       setFiltered(
-        students.filter(student => {
-          const fullName = student.firstName + student.lastName;
-          const regexp = new RegExp(e.target.value, 'gi');
-          return fullName.match(regexp);
+        students.filter(({ firstName, lastName, tags }) => {
+          const fullName = firstName + lastName;
+          const nameRegExp = new RegExp(name, 'gi');
+          const tagRegExp = new RegExp(tag, 'gi');
+          return name && tag
+            ? tags &&
+                tags.some(tag => tag.match(tagRegExp)) &&
+                fullName.match(nameRegExp)
+            : name
+            ? fullName.match(nameRegExp)
+            : tags && tags.some(tag => tag.match(tagRegExp));
         })
       );
     } else {
       setFiltered([]);
     }
-  };
+  }, [name, tag]);
+  useEffect(() => {
+    if (!filtered.length) {
+      setName('');
+      setTag('');
+    }
+  }, [filtered]);
   return (
-    <form onSubmit={e => e.preventDefault} className='search'>
+    <div className='search'>
       <input
         id='name-input'
-        ref={text}
+        value={name}
         type='text'
         placeholder='Search by name'
         onChange={handleChange}
       />
-    </form>
+      <input
+        id='tag-input'
+        value={tag}
+        type='text'
+        placeholder='Search by tags'
+        onChange={handleChange}
+      />
+    </div>
   );
 };
 
